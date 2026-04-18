@@ -1,21 +1,13 @@
-from flask import Flask, jsonify
+from flask import Flask
+from route import routes
 
 app = Flask(__name__)
 
-customers = [
-    {
-        "id": 1,
-        "name": "Rahul",
-        "plan": "Premium",
-        "charging_sessions": 40,
-        "failed_sessions": 5,
-        "usage_hours": 120
-    }
-]
+app.register_blueprint(routes)
 
-@app.route('/customers')
-def get_customers():
-    return jsonify(customers)
+@app.route("/")
+def home():
+    return "EV CRM Backend Running"
 
 if __name__ == "__main__":
     app.run(debug=True)
