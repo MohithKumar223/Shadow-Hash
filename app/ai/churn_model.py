@@ -134,7 +134,8 @@ def build_feature_table() -> pd.DataFrame:
         avg_incidents=("incidents", "mean"),
         max_active_devices=("active_devices", "max"),
     )
-    usage_summary["usage_decline_pct"] = usage.groupby("customer_id").apply(usage_decline)
+    usage_decline_series = usage.groupby("customer_id").apply(usage_decline).rename("usage_decline_pct")
+    usage_summary = usage_summary.join(usage_decline_series, how="left")
 
     features = customers.merge(ticket_summary, left_on="id", right_index=True, how="left")
     features = features.merge(usage_summary, left_on="id", right_index=True, how="left")
